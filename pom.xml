@@ -23,95 +23,6 @@
     <quarkus.platform.version>1.11.0.Final</quarkus.platform.version>
     <surefire-plugin.version>2.22.1</surefire-plugin.version>
   </properties>
-  <profiles>
-    <profile>
-      <id>release</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>3.0.0</version>
-            <executions>
-              <execution>
-                <id>tag-latest</id>
-                <phase>deploy</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>docker</executable>
-                  <arguments>
-                    <argument>tag</argument>
-                    <argument>johannesschafer/webnettools:${project.version}</argument>
-                    <argument>johannesschafer/webnettools:latest</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-              <execution>
-                <id>push-latest</id>
-                <phase>deploy</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>docker</executable>
-                  <arguments>
-                    <argument>push</argument>
-                    <argument>johannesschafer/webnettools:latest</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-              <execution>
-                <id>tag-for-heroku</id>
-                <phase>deploy</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>docker</executable>
-                  <arguments>
-                    <argument>tag</argument>
-                    <argument>johannesschafer/webnettools:${project.version}</argument>
-                    <argument>registry.heroku.com/web-net-tools/web</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-              <execution>
-                <id>push-to-heroku</id>
-                <phase>deploy</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>docker</executable>
-                  <arguments>
-                    <argument>push</argument>
-                    <argument>registry.heroku.com/web-net-tools/web</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-              <execution>
-                <id>release-on-heroku</id>
-                <phase>deploy</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>heroku</executable>
-                  <arguments>
-                    <argument>container:release</argument>
-                    <argument>web</argument>
-                    <argument>--app=web-net-tools</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -128,10 +39,6 @@
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>
       <version>0.9.12</version>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-container-image-docker</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
