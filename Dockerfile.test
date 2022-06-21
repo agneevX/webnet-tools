@@ -1,0 +1,72 @@
+FROM ubuntu:20.04 as builder
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+ADD . /root/webnettools/
+
+RUN apt-get update \
+        && apt-get -yq install maven \
+        && cd /root/webnettools \
+        && mvn clean package
+
+FROM alpine:latest
+
+ARG SPEEDTEST_VERSION="1.1.1"
+
+RUN apk update \
+        && apk add \
+                openjdk17-jre \
+                tcptraceroute \
+                mtr \
+                bash \
+                ca-certificates \
+                curl \
+                procps \
+                bind-tools \
+                util-linux \
+                iputils \
+                nmap
+
+RUN mkdir -p /app/lib
+
+RUN apk add git \
+        && cd /root \
+        && git clone https://github.com/drwetter/testssl.sh \
+        && apk del git
+
+RUN apk update \
+        && apk add wget \
+        && cd /root \
+        && wget https://install.speedtest.net/app/cli/ookla-speedtest-${SPEEDTEST_VERSION}-linux-`uname -m`.tgz \
+        && tar xf *.tgz \
+        && mv ./speedtest /usr/local/bin \
+        && rm -rf *speedtest* \
+        && apk del wget \
+        && mkdir -p /root/.config/ookla \
+        && echo -e "{\n" \
+        "     \"Settings\": {\n" \
+        "         \"LicenseAccepted\": \"604ec27f828456331ebf441826292c49276bd3c1bee1a2f65a6452f505c4061c\",\n" \
+        "         \"GDPRTimeStamp\": 1615738481\n" \
+        "     }\n" \
+        "}\n" > /root/.config/ookla/speedtest-cli.json
+#       && setcap cap_net_raw+eip /usr/bin/nmap
+
+COPY --from=builder /root/webnettools/target/*-runner.jar /app/app.jar
+COPY --from=builder /root/webnettools/target/lib/* /app/lib/
+
+WORKDIR /root
+
+ENV PATH=/app/testssl:$PATH
+ENV AVAILABLE_TOOLS=testssl,ping,traceroute,nmap,dig,mtr,speedtest
+ENV CA_DIR=/certs
+ENV PORT=8080
+# Configure the JAVA_OPTIONS, you can add -XshowSettings:vm to also display the heap size.
+ENV JAVA_OPTIONS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+
+EXPOSE 8080
+# USER 1001
+
+# HEALTHCHECK --start-period=60s CMD curl -f http://localhost:8080/q/health/live || exit 1
+
+ENTRYPOINT ["java"]
+CMD ["-Dquarkus.http.host=0.0.0.0", "-Dquarkus.http.port=${PORT}", "-jar", "/app/app.jar", "-Djava.util.logging.manager=org.jboss.logmanager.LogManager"]
