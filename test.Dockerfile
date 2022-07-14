@@ -33,7 +33,7 @@ RUN apk update \
                 nmap
 
 RUN apk add git \
-        && git clone -–depth 1 https://github.com/drwetter/testssl.sh /root \
+        && git clone --depth 1 https://github.com/drwetter/testssl.sh /root \
         && apk del git
 
 RUN mkdir -p /root/.config/ookla \
