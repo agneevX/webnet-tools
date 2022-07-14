@@ -1,6 +1,7 @@
 FROM ubuntu:latest as builder
 
 ARG DEBIAN_FRONTEND=noninteractive
+
 ARG SPEEDTEST_VERSION="1.1.1"
 
 ADD . /root/webnettools/
@@ -32,7 +33,7 @@ RUN apk update \
                 nmap
 
 RUN apk add git \
-        && git clone https://github.com/drwetter/testssl.sh /root \
+        && git clone -–depth 1 https://github.com/drwetter/testssl.sh /root \
         && apk del git
 
 RUN mkdir -p /root/.config/ookla \
