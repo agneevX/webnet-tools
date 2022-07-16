@@ -1,15 +1,12 @@
 package io.github.johannesschaefer.webnettools.payload;
 
-import io.github.johannesschaefer.webnettools.annotation.FixedParam;
-import io.github.johannesschaefer.webnettools.annotation.MainParameter;
-import io.github.johannesschaefer.webnettools.annotation.ParameterType;
-import io.github.johannesschaefer.webnettools.annotation.Tool;
+import io.github.johannesschaefer.webnettools.annotation.*;
 import lombok.Data;
 
 @Data
 @Tool(name="mtr", displayName="MTR", cmd="mtr", description="Network diagnostic tool combining 'traceroute' and 'ping'")
 public class MtrPayload implements Payload {
-    @MainParameter(displayName ="Hostname or IP address", description="Specify a hostname or an IP address")
+    @MainParameter(displayName = "Hostname or IP address", description = "Specify a hostname or an IP address")
     private String hostname;
 
     @FixedParam(param = "--report-wide", paramType = ParameterType.ONLY_PARAM)
