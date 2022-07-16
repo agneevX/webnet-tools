@@ -1,4 +1,5 @@
 # Web Net Tools
+
 [![GitHub tag](https://img.shields.io/github/tag/johannesschaefer/webnettools.svg)](https://github.com/johannesschaefer/webnettools/tags)
 [![License](https://img.shields.io/github/license/johannesschaefer/webnettools)](LICENSE)
 [![Docker](https://img.shields.io/docker/pulls/johannesschafer/webnettools)](https://hub.docker.com/r/johannesschafer/webnettools)
@@ -34,8 +35,9 @@ can help you to make such services available for easy use.
 ## Usage
 
 Simple run the following Docker command:
+
 ```
-docker run -p 8080:8080 --name webnettools johannesschafer/webnettools
+docker run -p 8080:8080 agneev/webnet-tools
 ```
 
 ## Configuration options
@@ -48,13 +50,14 @@ Currently you can configure the following aspects
 
 * To set additional certificates for the testssl.sh tool, just map the folder with the certificates to the container folder /certs. This directory can be adjusted by the Docker environment variable `CA_DIR` E.g.
 ```
-docker run -p 8080:8080 -v ./localfolderwithcerts:/certs --name webnettools johannesschafer/webnettools
+docker run -p 8080:8080 -v ./localfolderwithcerts:/certs --name webnettools agneev/webnet-tools
 ```
 
 
 * Intro text - set the Docker environment variable `INTRO_TEXT` to show an additional paragraph in front of the tool selection. This can be used to help the users in your specific environment. HTML tags are supported.
 
 ## Extension
+
 To build the tooling, just run `mvn clean install`. This builds the backend and frontend and creates an Docker image (`johannesschafer/webnettools`).
 To run the application during development mode, please start the backend with the following command from the root folder.
 ```
