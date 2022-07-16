@@ -15,23 +15,23 @@ public class MtrPayload implements Payload {
     @NumberParam(displayName = "Pings", param="--report-cycles", min=1., max=1000., step=1., description = "Set the number of pings sent")
     private Integer pings;
        
-    @BooleanParam(displayName = "Use UDP", param = "--udp", paramType = ParameterType.ONLY_PARAM, description = "Use UDP instead of ICMP echo")
+    @BooleanParam(displayName = "Use UDP", param = "--udp", paramType = ParameterType.ONLY_PARAM, labelTrue = "Yes", labelFalse = "No")
     private Boolean useUdp;
     
-    @BooleanParam(displayName = "Use TCP", param = "--tcp", paramType = ParameterType.ONLY_PARAM, description = "Use TCP instead of ICMP echo")
+    @BooleanParam(displayName = "Use TCP", param = "--tcp", paramType = ParameterType.ONLY_PARAM, labelTrue = "Yes", labelFalse = "No")
     private Boolean useTcp;
     
     @NumberParam(displayName = "Port", param="--port", min=1., max=65536., step=1., description = "Target port number for TCP, SCTP, or UDP")
     private Integer port;
     
-    @BooleanParam(displayName = "No DNS", param = "--no-dns", paramType = ParameterType.ONLY_PARAM, description = "Do not resolve host names")
-    private Boolean noDns;
+    @BooleanParam(displayName = "DNS lookups", param = "--no-dns", paramType = ParameterType.ONLY_PARAM, description = "Do not resolve host names", labelTrue = "Do not resolve", labelFalse = "Resolve")
+    private Boolean noDns = false;
     
-    @BooleanParam(displayName = "AS Lookup", param = "--as-lookup", paramType = ParameterType.ONLY_PARAM, description = "Display AS number")
-    private Boolean asLookup;
+    @BooleanParam(displayName = "AS Lookup", param = "--aslookup", paramType = ParameterType.ONLY_PARAM, description = "Display AS number", labelTrue = "Yes", labelFalse = "No")
+    private Boolean asLookup = false;
     
-    @BooleanParam(displayName = "Show IPs", param = "--show-ips", paramType = ParameterType.ONLY_PARAM, description = "Show IP numbers and host names")
-    private Boolean showIps;
+    @BooleanParam(displayName = "Show IPs", param = "--show-ips", paramType = ParameterType.ONLY_PARAM, description = "Show IP addresses in addition to host names", labelTrue = "Yes", labelFalse = "No")
+    private Boolean showIps = false;
 
     @Override
     public String getCacheString() {
