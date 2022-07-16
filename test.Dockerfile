@@ -4,11 +4,11 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 ARG SPEEDTEST_VERSION="1.1.1"
 
-ADD . /root/webnettools/
+ADD . /root/webnet-tools/
 
 RUN apt-get update \
         && apt-get -yq install maven wget \
-        && cd /root/webnettools \
+        && cd /root/webnet-tools \
         && mvn clean package
 
 RUN cd /root \
@@ -32,8 +32,10 @@ RUN apk update \
                 iputils \
                 nmap
 
-RUN apk add git \
-        && git clone --depth 1 https://github.com/drwetter/testssl.sh /root \
+RUN mkdir /app \
+        && apk add git \
+        && cd /app \
+        && git clone --depth 1 https://github.com/drwetter/testssl.sh \
         && apk del git
 
 RUN mkdir -p /root/.config/ookla \
@@ -45,13 +47,13 @@ RUN mkdir -p /root/.config/ookla \
         "}\n" > /root/.config/ookla/speedtest-cli.json
 #       && setcap cap_net_raw+eip /usr/bin/nmap
 
-COPY --from=builder /root/webnettools/target/*-runner.jar /app/app.jar
-COPY --from=builder /root/webnettools/target/lib/* /app/lib/
+COPY --from=builder /root/webnet-tools/target/*-runner.jar /app/app.jar
+COPY --from=builder /root/webnet-tools/target/lib/* /app/lib/
 COPY --from=builder /root/speedtest /usr/local/bin/
 
 WORKDIR /root
 
-ENV PATH=/app/testssl:$PATH
+ENV PATH=/app/testssl/testssl.sh:$PATH
 ENV AVAILABLE_TOOLS=testssl,ping,traceroute,nmap,dig,mtr,speedtest
 ENV CA_DIR=/certs
 ENV PORT=8080
