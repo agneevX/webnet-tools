@@ -15,10 +15,10 @@ public class MtrPayload implements Payload {
     @NumberParam(displayName = "Pings", param="--report-cycles", min=1., max=1000., step=1., description = "Set the number of pings sent")
     private Integer pings;
        
-    @BooleanParam(displayName = "Use UDP", param = "--udp", paramType = ParameterType.ONLY_PARAM, labelTrue = "Yes", labelFalse = "No")
+    @BooleanParam(displayName = "Use UDP", param = "--udp", paramType = ParameterType.ONLY_PARAM, description = "Use UDP instead of ICMP echo", labelTrue = "Yes", labelFalse = "No")
     private Boolean useUdp;
     
-    @BooleanParam(displayName = "Use TCP", param = "--tcp", paramType = ParameterType.ONLY_PARAM, labelTrue = "Yes", labelFalse = "No")
+    @BooleanParam(displayName = "Use TCP", param = "--tcp", paramType = ParameterType.ONLY_PARAM, description = "Use TCP instead of ICMP echo", labelTrue = "Yes", labelFalse = "No")
     private Boolean useTcp;
     
     @NumberParam(displayName = "Port", param="--port", min=1., max=65536., step=1., description = "Target port number for TCP, SCTP, or UDP")
