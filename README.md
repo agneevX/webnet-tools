@@ -1,11 +1,11 @@
 # Web Net Tools
 
-[![GitHub tag](https://img.shields.io/github/tag/johannesschaefer/webnettools.svg)](https://github.com/johannesschaefer/webnettools/tags)
 [![License](https://img.shields.io/github/license/johannesschaefer/webnettools)](LICENSE)
-[![Docker](https://img.shields.io/docker/pulls/johannesschafer/webnettools)](https://hub.docker.com/r/johannesschafer/webnettools)
+[![Docker](https://img.shields.io/docker/pulls/agneev/webnet-tools)](https://hub.docker.com/r/agneev/webnet-tools)
 
 Web Net Tools is a web frontend for some useful command line tooling. It provides especially an web frontend for tools like testssl.sh and nmap.
 Currently it support the following tools:
+
 * [testssl.sh](https://github.com/drwetter/testssl.sh)
 * Ping
 * Traceroute
@@ -23,7 +23,7 @@ Web Net Tools is a ready to use Docker image. No additional setup of the mention
 ## Demo
 
 A live demo is available under https://web-net-tools.herokuapp.com.
-The demo has a rate limit for each tool to avoid abuse of it.   
+The demo has a rate limit for each tool to avoid abuse of it.
 
 ## Main usage
 
@@ -34,10 +34,10 @@ can help you to make such services available for easy use.
 
 ## Usage
 
-Simple run the following Docker command:
+Simple run the following command ob a 
 
-```
-docker run -p 8080:8080 agneev/webnet-tools
+```text
+docker run -d -p 8080:8080 agneev/webnet-tools
 ```
 
 ## Configuration options
@@ -49,8 +49,12 @@ Currently you can configure the following aspects
 * Rate limit - Limits the number of calls of a specific tool to a specific target (e.g. host). The value is set in milliseconds between consecutive calls. E.g. set Docker variable `RATE_LIMIT=60000` to limit the calls to one per minute.
 
 * To set additional certificates for the testssl.sh tool, just map the folder with the certificates to the container folder /certs. This directory can be adjusted by the Docker environment variable `CA_DIR` E.g.
-```
-docker run -p 8080:8080 -v ./localfolderwithcerts:/certs --name webnettools agneev/webnet-tools
+
+```text
+docker run \
+  -p 8080:8080 \
+  -v ./localfolderwithcerts:/certs \
+  agneev/webnet-tools
 ```
 
 
@@ -60,12 +64,14 @@ docker run -p 8080:8080 -v ./localfolderwithcerts:/certs --name webnettools agne
 
 To build the tooling, just run `mvn clean install`. This builds the backend and frontend and creates an Docker image (`johannesschafer/webnettools`).
 To run the application during development mode, please start the backend with the following command from the root folder.
-```
+
+```text
 mvn compile quarkus:dev
 ```
 
 The frontend needs to be started from the frontend folder with the following command.
-```
+
+```text
 npm run dev
 ```
 
@@ -119,11 +125,11 @@ The following parameter type are supported.
 * String - simple input for strings
 * Number - simple input for number
 * Boolean - dropdown selection for true/false
-* Enum - dropdown selection for values from the given enum, the enum should have the final parameter value as toString result. See examples in [testssl payload](https://github.com/johannesschaefer/webnettools/tree/main/src/main/java/io/github/johannesschaefer/webnettools/payload/testssl/).
+* Enum - dropdown selection for values from the given enum, the enum should have the final parameter value as toString result. See examples in [testssl payload](src/main/java/io/github/johannesschaefer/webnettools/payload/testssl/).
 * File - file upload, web net tools create a temporary file with the content and passes the path to the file
 * Fixed - Fixes parameter with no choice on client side
 * Server side - Special parameter with additional control logic on the server side
 
-Please check the existing payload under [/src/main/java/io/github/johannesschaefer/webnettools/payload](https://github.com/johannesschaefer/webnettools/tree/main/src/main/java/io/github/johannesschaefer/webnettools/payload) for more examples.
+Please check the existing payload under [src/main/java/io/github/johannesschaefer/webnettools/payload](src/main/java/io/github/johannesschaefer/webnettools/payload) for more examples.
 
-To make the tool available, please enter the name of the tool in the [Dockerfile](https://github.com/johannesschaefer/webnettools/tree/main/src/main/docker/Dockerfile.jvm) (`ENV AVAILABLE_TOOLS`, used as default for the Docker image) and in the Java file [Producer](https://github.com/johannesschaefer/webnettools/tree/main/src/main/java/io/github/johannesschaefer/webnettools/Producer.java) (ConfigProperty `availableTools`, used at development time).
+To make the tool available, please enter the name of the tool in the [Dockerfile](src/main/docker/Dockerfile.jvm) (`ENV AVAILABLE_TOOLS`, used as default for the Docker image) and in the Java file [Producer](src/main/java/io/github/johannesschaefer/webnettools/Producer.java) (ConfigProperty `availableTools`, used at development time).
