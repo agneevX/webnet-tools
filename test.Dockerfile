@@ -23,16 +23,17 @@ RUN apk update \
         && apk add \
                 dumb-init \
                 openjdk17-jre \
+                ca-certificates \
+                procps \
+                util-linux \
+                iputils \
+                curl \
                 tcptraceroute \
                 mtr \
                 bash \
-                ca-certificates \
-                curl \
-                procps \
                 bind-tools \
-                util-linux \
-                iputils \
-                nmap
+                nmap \
+                liboping
 
 RUN apk add git \
         && mkdir /app \
